@@ -10,7 +10,6 @@
 #include "lpc17xx_pinsel.h"
 #include "systen_delay.h"
 #include "lpc17xx_libcfg_default.h"
-#include "./include/global.h"
 #include "./include/emissionIR.h"
 
 //===========================================================//

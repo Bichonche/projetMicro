@@ -11,8 +11,8 @@
 .\output\main.o: ..\User\systen_delay.h
 .\output\main.o: ..\User\lpc17xx_libcfg.h
 .\output\main.o: ..\Libraries\LCP1768_StdPeriph_Driver\include\lpc17xx_libcfg_default.h
-.\output\main.o: ..\User\./include/global.h
 .\output\main.o: ..\User\./include/emissionIR.h
 .\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\output\main.o: ..\Libraries\LCP1768_StdPeriph_Driver\include\lpc17xx_clkpwr.h
 .\output\main.o: ..\Libraries\LCP1768_StdPeriph_Driver\include\lpc17xx_dac.h
+.\output\main.o: ..\Libraries\LCP1768_StdPeriph_Driver\include\lpc17xx_timer.h

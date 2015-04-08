@@ -1,3 +1,4 @@
+
 /*********************************************************
 * variables globales
 **********************/
@@ -37,7 +38,7 @@ void clearScreen();
 ** emission IR 
 *********************/
 
-void emitMessage(typeMessage * tableau);
+void emitMessage(uint8_t * tableau, bool);
 
 /****************
 ** reception IR
