@@ -43,7 +43,7 @@ void instructions(uint8_t * instru, bool finInstructions);
 ** Émission IR 
 *********************/
 
-void emitMessage(typeMessage * tableau);
+void emitMessage(char, uint8_t, bool);
 
 /****************
 ** Réception IR
