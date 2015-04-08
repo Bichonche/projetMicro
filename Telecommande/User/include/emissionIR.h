@@ -5,7 +5,7 @@
 #include "systen_delay.h"
 
 
-void emitMessage(uint8_t * tabMessage, bool);
+void emitMessage(uint8_t * tabMessage, bool *);
 
 void init(void);
 void deInit(void);
@@ -13,7 +13,7 @@ void deInit(void);
 void header(void);
 void bit_0(void);
 void bit_1(void);
-void eof(void);
+void eom(void);
 
-void signal(bool, uint8_t);
+void signal(bool, double);
 

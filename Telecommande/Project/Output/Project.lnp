@@ -13,6 +13,7 @@
 ".\output\lpc17xx_adc.o"
 ".\output\main.o"
 ".\output\systen_delay.o"
+".\output\emissionir.o"
 --strict --scatter ".\Output\Project.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

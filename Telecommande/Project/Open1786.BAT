@@ -17,5 +17,6 @@ SET CPU_CLOCK=0x00B71B00
 "C:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via ".\output\lpc17xx_adc.__i"
 "C:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via ".\output\main.__i"
 "C:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via ".\output\systen_delay.__i"
+"C:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via ".\output\emissionir.__i"
 "C:\Keil_v5\ARM\ARMCC\Bin\ArmLink" --Via ".\Output\Project.lnp"
 "C:\Keil_v5\ARM\ARMCC\Bin\fromelf.exe" ".\Output\Project.axf" --i32combined --output ".\Output\Project.hex"
