@@ -7,13 +7,13 @@
 
 void emitMessage(uint8_t * tabMessage, bool);
 
-void init();
-void deInit();
+void init(void);
+void deInit(void);
 
-void header();
-void bit_0();
-void bit_1();
-void eof();
+void header(void);
+void bit_0(void);
+void bit_1(void);
+void eof(void);
 
 void signal(bool, uint8_t);
 
