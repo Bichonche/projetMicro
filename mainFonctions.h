@@ -34,6 +34,12 @@ void printScreen(char * message, char posX, char posY);
 void clearScreen();
 
 /*********************
+** Terminal
+*********************/
+
+void instructions(uint8_t * instru, bool finInstructions);
+
+/*********************
 ** Émission IR 
 *********************/
 
