@@ -93,5 +93,6 @@ arreturgence (arret_obligatoire (d));
 if (b)
 {
 //AfficheEcran(0,0,"Obstacle sur le côté");
+//stop();
 }
 }
