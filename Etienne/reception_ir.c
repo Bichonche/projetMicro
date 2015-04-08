@@ -1,76 +1,36 @@
-
-	bool current_bit;
-	
-	char marge_haute = 1.2;
-	char marge_basse = 0.8;
-	
-	int valeur_header = 9000;
-	int valeur_bit1 = 1000;
-	int valeur_bit0 = 2000;
-	int valeur_stop = 45000;
-	
-	int valeur_stop_min = valeur_stop*marge_basse;
-	int valeur_stop_max = valeur_stop*marge_haute
-	int valeur_bit1_min = valeur_bit1*marge_basse;
-	int valeur_bit1_max = valeur_bit1*marge_haute;
-	int valeur_bit0_min = valeur_bit0*marge_basse;
-	int valeur_bit0_max =  valeur_bit0*marge_haute
-	int valeur_header_min = valeur_header*marge_basse;
-	int valeur_header_max = valeur_header*marge_haute;
-
-
-	bool flag_debut_transmission;
-	bool flag_fin_transmission;
-	bool flag_nouveau_bit;
-
-
-	bool T[128];	// tableau de 128 bits
-	char cpt;	// variable pour compter les bits
-	bool flag_fin_enregistrement;
-	bool flag_reception_bit;
-	
-	void enregistrement_message(bool);
-	void init(void);
-	bool capture_duree(int);
-
-	cpt = 127;
-	
-
-/* Main ------------------------------------------------------------------------------ */
-
-int main(void)
-{
-	
-	
-	while(1)
-	{
-		
-		
-	}
-
-
-}
-
-
-
-/* Initialisation des variables ----------------------------------------------------- */
+#include "reception.h"
 
 void init()
 {
+	// initialisation des variables
 	flag_debut_transmission = 0;
 	flag_fin_transmission = 0;
 	flag_fin_enregistrement = 0;
 	flag_reception_bit = 0;
 	
-	flag_RCV = 0;
+	// configuration du pinsel
+	PINSEL_CFG_Type PinCfg;
+	PinCfg.Portnum = PINSEL_PORT_0;
+	PinCfg.Pinnum = PINSEL_PIN_24;
+	PinCfg.Funcnum = PINSEL_FUNC_3;
+	PinCfg.Pinmode = PINSEL_PINMODE_PULLUP;
+	PinCfg.OpenDrain = PINSEL_PINMODE_NORMAL;
+	PINSEL_ConfigPin(&PinCfg);
+	
+	// initialisation du timer en mode counter
+	TIM_TIMERCFG_Type ConfigStruct;
+	TIM_ConfigStructInit(TIM_COUNTER_FALLING_MODE, &ConfigStruct);
+
+	TIM_Init(&LPC_TIM3, TIM_COUNTER_FALLING_MODE, &ConfigStruct);
+	
 }
 
 
-/* Initialisation du timer ---------------------------------------------------------- */
+/* Interruption du timer ---------------------------------------------------------- */
 
 void TIMER0_IRQHandler()
 {
-	flag_RCV = TIM_GetIntStatus(TIMER0, TIM_CR0_INT);	// WTF ?
+	
 }
 
 
@@ -78,7 +38,7 @@ void TIMER0_IRQHandler()
 
 bool capture_duree(int duree)
 {
-		
+	
 	while (cpt >= 0)
 	{
 		if (duree > valeur_header_min && duree < valeur_header_max)		// debut de la transmission
@@ -113,7 +73,12 @@ bool capture_duree(int duree)
 		}
 	}
 	return current_bit;	
-
+	
 }
 
 /* Decodage du message ------------------------------------------------------------------- */
+
+uint_8_t decodage (bool T[128])
+{
+	
+}
