@@ -62,5 +62,5 @@ void emitMessage(typeMessage * tableau);
 ** Gestion de la distance
 ****************/
 
-//TODO by Romain
+void detection (void);
 //édition
