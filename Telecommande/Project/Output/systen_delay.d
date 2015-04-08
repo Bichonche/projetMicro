@@ -1,0 +1,10 @@
+.\output\systen_delay.o: ..\User\systen_delay.c
+.\output\systen_delay.o: ..\User\systen_delay.h
+.\output\systen_delay.o: ..\User\lpc17xx_libcfg.h
+.\output\systen_delay.o: ..\Libraries\LCP1768_StdPeriph_Driver\include\lpc_types.h
+.\output\systen_delay.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\output\systen_delay.o: ..\Libraries\CM3\DeviceSupport\NXP\LPC17xx\LPC17xx.h
+.\output\systen_delay.o: ..\Libraries\CM3\CoreSupport\core_cm3.h
+.\output\systen_delay.o: ..\Libraries\CM3\CoreSupport\core_cmInstr.h
+.\output\systen_delay.o: ..\Libraries\CM3\CoreSupport\core_cmFunc.h
+.\output\systen_delay.o: ..\Libraries\CM3\DeviceSupport\NXP\LPC17xx\system_LPC17xx.h

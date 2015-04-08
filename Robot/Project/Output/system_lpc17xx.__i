@@ -1,0 +1,6 @@
+-c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork -I..\Libraries\LCP1768_StdPeriph_Driver\include -I..\Libraries\CM3\CoreSupport -I..\Libraries\CM3\DeviceSupport\NXP\LPC17xx -I..\User
+-I C:\Users\Corentin\Documents\Projet_Micro_2015\Keil_Projet_Depart\Project\RTE
+-I C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\2.0.0\Device\Include
+-I C:\Keil_v5\ARM\CMSIS\Include
+-D__UVISION_VERSION="514" -DLPC175x_6x
+-o .\output\system_lpc17xx.o --omf_browse .\output\system_lpc17xx.crf --depend .\output\system_lpc17xx.d "..\Libraries\CM3\DeviceSupport\NXP\LPC17xx\system_LPC17xx.c"

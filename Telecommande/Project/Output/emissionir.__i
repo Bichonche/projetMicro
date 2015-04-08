@@ -1,0 +1,5 @@
+-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\Libraries\LCP1768_StdPeriph_Driver\include -I..\Libraries\CM3\CoreSupport -I..\Libraries\CM3\DeviceSupport\NXP\LPC17xx -I..\User
+-I C:\Keil\ARM\RV31\INC
+-I C:\Keil\ARM\CMSIS\Include
+-I C:\Keil\ARM\Inc\NXP\LPC17xx
+-o .\output\emissionir.o --omf_browse .\output\emissionir.crf --depend .\output\emissionir.d "emissionIR.c"
