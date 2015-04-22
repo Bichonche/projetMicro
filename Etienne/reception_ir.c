@@ -1,7 +1,11 @@
 #include "reception.h"
 
-void init()
+void init(void)
 {
+	
+	PINSEL_CFG_Type PinCfg;
+	TIM_CAPTURECFG_Type ConfigStruct;
+
 	// initialisation des variables
 	flag_debut_transmission = 0;
 	flag_fin_transmission = 0;
@@ -9,7 +13,6 @@ void init()
 	flag_reception_bit = 0;
 	
 	// configuration du pinsel
-	PINSEL_CFG_Type PinCfg;
 	PinCfg.Portnum = PINSEL_PORT_0;
 	PinCfg.Pinnum = PINSEL_PIN_24;
 	PinCfg.Funcnum = PINSEL_FUNC_3;
@@ -18,10 +21,10 @@ void init()
 	PINSEL_ConfigPin(&PinCfg);
 	
 	// initialisation du timer en mode counter
-	TIM_TIMERCFG_Type ConfigStruct;
 	TIM_ConfigStructInit(TIM_COUNTER_FALLING_MODE, &ConfigStruct);
 
-	TIM_Init(&LPC_TIM3, TIM_COUNTER_FALLING_MODE, &ConfigStruct);
+	TIM_Init(LPC_TIM3, TIM_COUNTER_FALLING_MODE, &ConfigStruct);
+	
 	
 }
 
@@ -38,6 +41,16 @@ void TIMER0_IRQHandler()
 
 bool capture_duree(int duree)
 {
+	
+	// définition des intervalles de vérification des valeurs temporelles
+	float valeur_stop_min = valeur_stop * marge_basse;
+	float valeur_stop_max = marge_haute*valeur_stop;
+	float valeur_bit1_min = valeur_bit1*marge_basse;
+	float valeur_bit1_max = valeur_bit1*marge_haute;
+	float valeur_bit0_min = valeur_bit0*marge_basse;
+	float valeur_bit0_max =  valeur_bit0*marge_haute;
+	float valeur_header_min = valeur_header*marge_basse;
+	float valeur_header_max = valeur_header*marge_haute;
 	
 	while (cpt >= 0)
 	{
@@ -78,7 +91,7 @@ bool capture_duree(int duree)
 
 /* Decodage du message ------------------------------------------------------------------- */
 
-uint_8_t decodage (bool T[128])
+unsigned int decodage (bool T[128])
 {
 	
 }
