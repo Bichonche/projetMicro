@@ -39,7 +39,7 @@ void clearScreen();
 
 void initTerminal();
 //Appele par une interruption:
-void tabDonnees(uint8_t tableau[16], bool finTab); //Apres avoir mis un caractère, mettre flag à 0.
+void tabDonnees(uint8_t tableau[16], bool * finTab); //Apres avoir mis un caractère, mettre flag à 0.
 
 
 /*********************
