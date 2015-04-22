@@ -20,6 +20,7 @@ void emitMessage(uint8_t * t, bool  * flagEmit)
 				bit_0();
 	eom();
 	*flagEmit = true;
+			
 }
 //Initialisation
 void init()
