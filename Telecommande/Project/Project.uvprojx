@@ -493,6 +493,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\systen_delay.c</FilePath>
             </File>
+            <File>
+              <FileName>emissionIR.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\emissionIR.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

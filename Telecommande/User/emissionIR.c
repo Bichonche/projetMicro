@@ -24,31 +24,20 @@ void emitMessage(uint8_t * t, bool  * flagEmit)
 //Initialisation
 void init()
 {
-	//Initialisation des délais en ms
-	delay_init();
 	//Configuration des timer
 	//TIMER0
+	TIM_ConfigStructInit(TIM_TIMER_MODE, &TIMERCFG_0);
 	TIMERCFG_0.PrescaleOption = TIM_PRESCALE_TICKVAL;
 	TIMERCFG_0.PrescaleValue 	= 100;
-	
-	//TIMER1
-	TIMERCFG_1.PrescaleOption = TIM_PRESCALE_TICKVAL;
-	TIMERCFG_1.PrescaleValue 	= 100;
-	
 	//MR0
-
-	MATCHCFG_0.MatchChannel				= 0;
-	MATCHCFG_0.IntOnMatch					= ENABLE;
-	MATCHCFG_0.StopOnMatch				= DISABLE;
-	MATCHCFG_0.ResetOnMatch				= DISABLE;
 	MATCHCFG_0.ExtMatchOutputType	=	TIM_EXTMATCH_TOGGLE;
-	MATCHCFG_0.MatchValue					= 14; 
+	MATCHCFG_0.ResetOnMatch	= ENABLE;
 	
 	//Config du port Emetteur IR
 
-	PINCFG_0.Portnum 	= 1;
-	PINCFG_0.Pinnum 	= 28;
-	PINCFG_0.Funcnum 	= 3;
+	PINCFG_0.Portnum 	= PINSEL_PORT_1;
+	PINCFG_0.Pinnum 	= PINSEL_PIN_28;
+	PINCFG_0.Funcnum 	= PINSEL_PORT_3;
 	PINCFG_0.Pinmode	= PINSEL_PINMODE_PULLUP;
 	PINCFG_0.OpenDrain= PINSEL_PINMODE_NORMAL;
 	
@@ -57,6 +46,9 @@ void init()
 	//TIMER0 et MR0
 	TIM_Init(LPC_TIM0, TIM_TIMER_MODE, &TIMERCFG_0);
 	TIM_ConfigMatch(LPC_TIM0, &MATCHCFG_0);
+	TIM_UpdateMatchValue(LPC_TIM0, 0, 3);
+	
+
 }
 
 void deInit()
@@ -106,6 +98,4 @@ void signal(bool enble, double length)
 		TIM_Cmd(LPC_TIM0, ENABLE);
 	else
 		TIM_Cmd(LPC_TIM0, DISABLE);
-	delay_ms(length);	
 }
-

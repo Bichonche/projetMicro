@@ -22,12 +22,8 @@ uint8_t tabMessage[16];
 //===========================================================//
 int main(void)
 {
-	for (i = 0; i < 16; i++)
-		tabMessage[i] = i;
-	while(1)
-	{
-		emitMessage(tabMessage, &flagEmit);
-	}	
+		init();
+		signal(true,1);
 }
 
 
