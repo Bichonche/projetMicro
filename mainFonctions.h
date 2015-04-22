@@ -29,7 +29,7 @@ void stop();
 //initialiser l'ecran
 void initScreen();
 //affichage
-void printScreen(char * message, char posX, char posY);
+void printScreen(uint8_t * message, uint8_t posX, uint8_t posY);
 //nettoyer
 void clearScreen();
 
@@ -37,7 +37,10 @@ void clearScreen();
 ** Terminal
 *********************/
 
-void instructions(uint8_t * instru, bool finInstructions);
+void initTerminal();
+//Appele par une interruption:
+void tabDonnees(uint8_t tableau[16], bool finTab); //Apres avoir mis un caractère, mettre flag à 0.
+
 
 /*********************
 ** Émission IR 
