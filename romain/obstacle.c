@@ -12,50 +12,50 @@ uint16_t v;
 // On charge les données en entrée sur le GPIO sur le P0.23 dans la valeur v
 // On se place en mode AD0.0
 // recopie de p0.23 dans v
-v = ADC_ChannelGetData(LPC_ADC,0);
+  v = ADC_ChannelGetData(LPC_ADC,0);
 // On renvoie la valeur du voltage en fonction de la luminosité
-return v;
+   return v;
 }
 
 float distance (void)
 {
 float d = 0;
 uint16_t v = chargement(); // chargement des données du laser
-d = v / 0.26; // inversion de la fonction
+   d = v / 0.26; // inversion de la fonction
 return d;
 }
 
 int arret_obligatoire (float d)
 {
-int a = 0;
+  int a = 0;
 
-if (d < 15)
-{
-a = 2; // On est trop pres. On doit s'arrêter
-}
-else
-{
-if (d > 30)
-{
-	if obstacle_cote
+	if (d < 15)
 	{
-		a = 2; 
+ 	  a = 2; // On est trop pres. On doit s'arrêter
 	}
 	else
 	{
-a = 1; // On commence à être trop pres
-}
-}
-else
-{
-		if obstacle_cote
+	if (d > 30)
+	  {
+    	    if obstacle_cote
+          {
+	    a = 2; 
+	  }
+	else
 	{
-		a = 2; 
+	  a = 1; // On commence à être trop pres
+	}
 	}
 	else
 	{
-a = 0; // On est loin d'un obstacle (sur le front du robot)
-}
+	  if obstacle_cote
+	{
+	  a = 2; 
+	}
+	else
+	{
+	  a = 0; // On est loin d'un obstacle (sur le front du robot)
+	}
 }
 return a;
 }
