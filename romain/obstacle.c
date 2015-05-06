@@ -6,6 +6,7 @@
 		
 GPIO_Registres *pGPIO0; // Pointeur sur la structure du GPIO0
 GPIO_Registres *pGPIO1; // Pointeur sur la structure du GPIO1
+unsigned int FIO1PIN;
 
 uint16_t chargement (void)
 {
@@ -29,9 +30,11 @@ return d;
 bool obstacle_cote (void)
 {
 bool b;
+	int d1;
+	int d2;
 //chargemet des données des microrupteurs depuis P1.11 et P1.21
-	d1 = FIO1PIN >>11 & 0x01;	// copie de p1.11 sur d1 (si 1 le bouton est poussé)
-        d2 = FIO1PIN >>21 & 0x01;// copie de p1.21 sur d2 (si 1 le bouton est poussé)
+	d1 = (FIO1PIN >>11) & 0x01;	// copie de p1.11 sur d1 (si 1 le bouton est poussé)
+        d2 = (FIO1PIN >>21) & 0x01;// copie de p1.21 sur d2 (si 1 le bouton est poussé)
 // Si un des deux boutons est poussé, on envoie un booléen true. Sinon on renvoie false.
 if (d1 != 0)
   {
