@@ -2,10 +2,10 @@
 #include "declarations.h"
 #include "lpc17xx_adc.h"
 
-    typedef enum {
-            vrai  = (1==1),
+   // typedef enum {
+   //         vrai  = (1==1),
             faux = (1==0),
-    } boolean;
+   // } boolean;
 		
 GPIO_Registres *pGPIO0; // Pointeur sur la structure du GPIO0
 GPIO_Registres *pGPIO1; // Pointeur sur la structure du GPIO1
@@ -20,6 +20,7 @@ v = ADC_ChannelGetData(LPC_ADC,0);
 // On renvoie la valeur du voltage en fonction de la luminosité
 return v;
 }
+
 float distance (void)
 {
 float d = 0;
