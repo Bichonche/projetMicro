@@ -31,23 +31,23 @@ bool obstacle_cote (void)
 bool b;
 //chargemet des données des microrupteurs depuis P1.11 et P1.21
 	d1 = FIO1PIN >>11 & 0x01;	// copie de p1.11 sur d1 (si 1 le bouton est poussé)
-d2 = FIO1PIN >>21 & 0x01;// copie de p1.21 sur d2 (si 1 le bouton est poussé)
+        d2 = FIO1PIN >>21 & 0x01;// copie de p1.21 sur d2 (si 1 le bouton est poussé)
 // Si un des deux boutons est poussé, on envoie un booléen true. Sinon on renvoie false.
 if (d1 != 0)
-{
-b = true;
-}
+  {
+    b = true;
+  }
 else
-{
-if (d2 != 0)
-{
-b = true;
-}
-else
-{
-b = false;
-}
-}
+  {
+   if (d2 != 0)
+    {
+      b = true;
+    }
+   else
+    {
+      b = false;
+    }
+  }
 return b;
 }
 
@@ -60,31 +60,31 @@ int arret_obligatoire (float d)
  	  a = 2; // On est trop pres. On doit s'arrêter
 	}
 	else
-	{
-	if (d > 30)
 	  {
-    	    if (obstacle_cote)
-          {
-	    a = 2; 
-	  }
-	else
-	{
-	  a = 1; // On commence à être trop pres
-	}
-	}
-	else
-	{
-	  if (obstacle_cote)
-	{
-	  a = 2; 
-	}
-	else
-	{
-	  a = 0; // On est loin d'un obstacle (sur le front du robot)
-	}
-}
+            if (d > 30)
+	     {
+    	       if (obstacle_cote)
+                {
+	          a = 2; 
+	        }
+	       else
+        	{
+         	  a = 1; // On commence à être trop pres
+        	}
+       	     }
+	   else
+	    {
+	     if (obstacle_cote)
+	      {
+	       a = 2; 
+	      }
+	     else
+	      {
+	        a = 0; // On est loin d'un obstacle (sur le front du robot)
+	      }
+           }
+         }
 return a;
-}
 }
 
 
