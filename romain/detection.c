@@ -66,7 +66,7 @@ int arret_obligatoire (float d)
 	  {
             if (d > 30)
 	     {
-    	       if (obstacle_cote)
+    	       if (obstacle_cote())
                 {
 	          a = 2; 
 	        }
@@ -77,7 +77,7 @@ int arret_obligatoire (float d)
        	     }
 	   else
 	    {
-	     if (obstacle_cote)
+	     if (obstacle_cote())
 	      {
 	       a = 2; 
 	      }
