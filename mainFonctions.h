@@ -65,5 +65,5 @@ void emitMessage(char, uint8_t, bool);
 ** Gestion de la distance
 ****************/
 
-void detection (void);
+int detection (void);
 //édition
