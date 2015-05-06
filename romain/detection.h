@@ -6,6 +6,5 @@
 #include "lpc17xx_adc.h"
 uint16_t chargement (void);
 float distance (void);
-int arret_obligatoire (float d);
-boolean obstacle_cote (void);
+bool obstacle_cote (void);
 int detection (void);
