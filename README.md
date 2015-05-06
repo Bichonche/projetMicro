@@ -1,6 +1,6 @@
 # projetMicro
 
-Chef de projet                Melaine petit homme Vert
+Chef de projet                Melaine Verre
 Tache 1         LCD           Antoine Perquin
 Tache 2         Propulsion    Ian Jeantet
 Tache 3         Détection     Romain Geniet
