@@ -1,8 +1,7 @@
 #include "lpc17xx_pinsel.h"
 #include "declarations.h"
 #include "lpc17xx_adc.h"
-//#include "servoMoteur.h"
-//#include "affichage.h"
+
     typedef enum {
             vrai  = (1==1),
             faux = (1==0),
