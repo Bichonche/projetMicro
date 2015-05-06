@@ -1,6 +1,7 @@
 #include "lpc17xx_pinsel.h"
 #include "declarations.h"
 #include "lpc17xx_adc.h"
+#include <stdbool.h>
 
 		
 GPIO_Registres *pGPIO0; // Pointeur sur la structure du GPIO0
@@ -25,42 +26,6 @@ uint16_t v = chargement(); // chargement des données du laser
 return d;
 }
 
-int arret_obligatoire (float d)
-{
-  int a = 0;
-
-	if (d < 15)
-	{
- 	  a = 2; // On est trop pres. On doit s'arrêter
-	}
-	else
-	{
-	if (d > 30)
-	  {
-    	    if obstacle_cote
-          {
-	    a = 2; 
-	  }
-	else
-	{
-	  a = 1; // On commence à être trop pres
-	}
-	}
-	else
-	{
-	  if obstacle_cote
-	{
-	  a = 2; 
-	}
-	else
-	{
-	  a = 0; // On est loin d'un obstacle (sur le front du robot)
-	}
-}
-return a;
-}
-}
-
 bool obstacle_cote (void)
 {
 bool b;
@@ -70,7 +35,7 @@ PINSEL_PIN_14 <<1;// copie de p1.21 sur d2 (si 1 le bouton est poussé)
 // Si un des deux boutons est poussé, on envoie un booléen true. Sinon on renvoie false.
 if (PINSEL_PIN_14 != 0)
 {
-b = vrai;
+b = true;
 }
 else
 {
@@ -85,6 +50,43 @@ b = false;
 }
 return b;
 }
+
+int arret_obligatoire (float d)
+{
+  int a = 0;
+
+	if (d < 15)
+	{
+ 	  a = 2; // On est trop pres. On doit s'arrêter
+	}
+	else
+	{
+	if (d > 30)
+	  {
+    	    if (obstacle_cote)
+          {
+	    a = 2; 
+	  }
+	else
+	{
+	  a = 1; // On commence à être trop pres
+	}
+	}
+	else
+	{
+	  if (obstacle_cote)
+	{
+	  a = 2; 
+	}
+	else
+	{
+	  a = 0; // On est loin d'un obstacle (sur le front du robot)
+	}
+}
+return a;
+}
+}
+
 
 int detection (void)
 {
