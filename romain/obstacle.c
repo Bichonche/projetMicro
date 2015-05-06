@@ -2,10 +2,6 @@
 #include "declarations.h"
 #include "lpc17xx_adc.h"
 
-   // typedef enum {
-   //         vrai  = (1==1),
-            faux = (1==0),
-   // } boolean;
 		
 GPIO_Registres *pGPIO0; // Pointeur sur la structure du GPIO0
 GPIO_Registres *pGPIO1; // Pointeur sur la structure du GPIO1
