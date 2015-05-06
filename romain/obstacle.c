@@ -61,9 +61,9 @@ return a;
 }
 }
 
-boolean obstacle_cote (void)
+bool obstacle_cote (void)
 {
-boolean b;
+bool b;
 //chargemet des données des microrupteurs depuis P1.11 et P1.21
 	PINSEL_PIN_8 << 1;	// copie de p1.11 sur d1 (si 1 le bouton est poussé)
 PINSEL_PIN_14 <<1;// copie de p1.21 sur d2 (si 1 le bouton est poussé)
@@ -91,6 +91,6 @@ int detection (void)
 /*On vient de lancer la detection.*/
 /* On mesure la distance et on vérifie qu'aucun obstacle ne se trouve sur le côté*/
 float d = distance ();
-boolean b = obstacle_cote ();
+bool b = obstacle_cote ();
 return arret_obligatoire(d);
 }
