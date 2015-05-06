@@ -28,9 +28,11 @@ uint16_t v = chargement(); // chargement des données du laser
 d = v / 0.26; // inversion de la fonction
 return d;
 }
+
 int arret_obligatoire (float d)
 {
 int a = 0;
+
 if (d < 15)
 {
 a = 2; // On est trop pres. On doit s'arrêter
@@ -39,26 +41,30 @@ else
 {
 if (d > 30)
 {
+	if obstacle_cote
+	{
+		a = 2; 
+	}
+	else
+	{
 a = 1; // On commence à être trop pres
+}
 }
 else
 {
+		if obstacle_cote
+	{
+		a = 2; 
+	}
+	else
+	{
 a = 0; // On est loin d'un obstacle (sur le front du robot)
 }
 }
 return a;
 }
-void arreturgence (int a)
-{
-if (a == 2)
-{
-//stop();
-//AfficheEcran(0,0,"reculez");
 }
-else
-{
-}
-}
+
 boolean obstacle_cote (void)
 {
 boolean b;
@@ -74,25 +80,21 @@ else
 {
 if (PINSEL_PIN_14 != 0)
 {
-b = vrai;
+b = true;
 }
 else
 {
-b = faux;
+b = false;
 }
 }
 return b;
 }
-void detection (void)
+
+int detection (void)
 {
 /*On vient de lancer la detection.*/
 /* On mesure la distance et on vérifie qu'aucun obstacle ne se trouve sur le côté*/
 float d = distance ();
 boolean b = obstacle_cote ();
-arreturgence (arret_obligatoire (d));
-if (b)
-{
-//AfficheEcran(0,0,"Obstacle sur le côté");
-//stop();
-}
+return arret_obligatoire(d);
 }
