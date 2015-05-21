@@ -1,37 +1,33 @@
+
 #include "lpc17xx_timer.h"
 #include "lpc17xx_pinsel.h"
 #include <stdbool.h>
 	
-	// ---------------- déclarations des constantes & variables globales -------------
+	float head_min;
+	float head_max;
+	float bit0_min;
+	float bit0_max;
+	float bit1_min;
+	float bit1_max;
+	float stop_min;
+	float stop_max;
 	
-	// IR peu fiable => on prend +/- 20% du temps demandé
 	float marge_haute = 1.2;
 	float marge_basse = 0.8;
+	unsigned short int head = 9000;
+	unsigned short int bit0 = 2000;
+	unsigned short int bit1 = 1000;
+	unsigned short int stop = 45000;
 	
-	// temps caractéristiques qui permettent de distinguer les signaux
-	unsigned int valeur_header = 9000;
-	unsigned int valeur_bit1 = 1000;
-	unsigned int valeur_bit0 = 2000;
-	int valeur_stop = 45000;
+	int cpt_bit;
+	int cpt_oct;
+	uint32_t duree;
+	int Tab[16];
 	
+	bool flag_debut_reception;
+	bool flag_fin_reception;
 
-	// déclaration des flags
-	bool flag_debut_transmission;
-	bool flag_fin_transmission;
-	bool flag_nouveau_bit;
-
-	// pour la fonction de capture du bit
-	bool current_bit;
-	bool T[128];
-	char cpt = 127;
-	bool flag_fin_enregistrement;
-	bool flag_reception_bit;
-	
-	// prototypes des fonctions & procédures
-	void enregistrement_message(bool);
 	void init(void);
-	bool capture_duree(int);
-	void TIMER0_IRQHandler(void);
-	unsigned int decodage (bool T[128]);
-	
+	void decodage(void);
+	void TIMER3_IRQHandler(void);
 	
