@@ -83,16 +83,17 @@ void avancer (int speed, int distance)
 	PWM_MatchUpdate(LPC_PWM1, 2, VIT_NULLE-5*speed, PWM_MATCH_UPDATE_NOW); // Moteur gauche
 	PWM_MatchUpdate(LPC_PWM1, 4, VIT_NULLE+5*speed, PWM_MATCH_UPDATE_NOW); // Moteur droit	
 	
+	// Calcul du nonbre de fronts à compter
+	NB_FRONTS = FRONTS_PAR_TOUR*distance/perim;
+	
 	// Mise en route des encodeurs
 	TIM_Cmd(LPC_TIM0,ENABLE); // Capture CAP0[0] Enable
 	TIM_Cmd(LPC_TIM1,ENABLE); // Capture CAP1[0] Enable
 	// Mise en route des moteurs
 	LPC_PWM1->TCR |= 1; // Counter Enable	
 	
-	NB_FRONTS = FRONTS_PAR_TOUR*distance/perim;
-	
-	/* On reste dans le boucle tant que le robot n'a pas fait la distance souhaitée */
-	while (LPC_TIM0->TC < NB_FRONTS || LPC_TIM1->TC < NB_FRONTS) {}
+	/* On reste dans la boucle tant que le robot n'a pas fait la distance souhaitée */
+	while (LPC_TIM0->TC < NB_FRONTS) {} // || LPC_TIM1->TC < NB_FRONTS) {}
 	stop(); // Arrêt à la fin de la commande
 	
 }
@@ -101,21 +102,23 @@ void rotation (int degre) // degre dans [-180;180]
 {
 	float NB_FRONTS = 0;
 	
-	if (degre > 0) { // Tourner à gauche
+	if (degre > 0) { // Tourner à droite
 		
 		// Config MR2/MR4 pour Tourner
 		PWM_MatchUpdate(LPC_PWM1, 2, VIT_MAX_ARRIERE, PWM_MATCH_UPDATE_NOW); // Moteur gauche (vitesse max en marche arrière)
 		PWM_MatchUpdate(LPC_PWM1, 4, VIT_MAX_ARRIERE, PWM_MATCH_UPDATE_NOW); // Moteur droit (vitesse max en marche arrière)
 		
-		NB_FRONTS = FRONTS_PAR_TOUR*(D*degre/360)/(2*R);
+		// Calcul du nonbre de fronts à compter
+		NB_FRONTS = FRONTS_PAR_TOUR*D*degre/(360*2*R);
 		
-	} else { // Tourner à droite
+	} else { // Tourner à gauche
 		
 		// Config MR2/MR4 pour Tourner
 		PWM_MatchUpdate(LPC_PWM1, 2, VIT_MAX_AVANT, PWM_MATCH_UPDATE_NOW); // Moteur gauche (vitesse max en marche avant)
 		PWM_MatchUpdate(LPC_PWM1, 4, VIT_MAX_AVANT, PWM_MATCH_UPDATE_NOW); // Moteur droit (vitesse max en marche avant)
 		
-		NB_FRONTS = -FRONTS_PAR_TOUR*(D*degre/360)/(2*R);
+		// Calcul du nonbre de fronts à compter
+		NB_FRONTS = -FRONTS_PAR_TOUR*D*degre/(360*2*R);
 	}
 	
 	// Mise en route des encodeurs
@@ -124,15 +127,15 @@ void rotation (int degre) // degre dans [-180;180]
 	// Mise en route des moteurs
 	LPC_PWM1->TCR |= 1; // Counter Enable
 	
-	/* On reste dans le boucle tant que le robot n'a pas fait la distance souhaitée */
-	while (LPC_TIM0->TC < NB_FRONTS || LPC_TIM1->TC < NB_FRONTS) {}
+	/* On reste dans la boucle tant que le robot n'a pas fait la distance souhaitée */
+	while (LPC_TIM0->TC < NB_FRONTS) {} // || LPC_TIM1->TC < NB_FRONTS) {}
 	stop(); // Arrêt à la fin de la commande
 	
 }
 
 void stop (void)
 { 
-	/* Gestion des servoSmoteurs */
+	/* Gestion des servomoteurs */
 	
 	// Arrêt du PWM
 	LPC_PWM1->TCR &= ~1; // Counter Disable
