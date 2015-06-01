@@ -10,3 +10,4 @@ bool obstacle_cote (void);
 int detection (void);
 void EINT0_IRQHandler (void);
 void EINT1_IRQHandler (void);
+void detectionglobale (void);
