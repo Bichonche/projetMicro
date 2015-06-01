@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include "lpc17xx_pwm.h"
 #include "lpc17xx_timer.h"
 #include "lpc17xx_pinsel.h"
