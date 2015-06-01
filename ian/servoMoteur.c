@@ -1,7 +1,6 @@
 #include "servoMoteur.h"
-//#include "detection.h"
 
-void init_PWM ()
+void init_PWM (void)
 {
 	PWM_TIMERCFG_Type PWM_struct;
 	PINSEL_CFG_Type PinCfg;
@@ -24,7 +23,7 @@ void init_PWM ()
 	/* Config Timer */
 	
 	// Prescale
-	LPC_PWM1->PR = 25; // TC s'incrémente à chaque µs (PWM_Clock = Clock/4 = 25MHz)
+	LPC_PWM1->PR = 24; // TC s'incrémente à chaque µs (PWM_Clock = Clock/4 = 25MHz)
 	
 	// Config MR0
 	PWM_MatchConfigStruct.MatchChannel = 0;
@@ -37,18 +36,16 @@ void init_PWM ()
 	PWM_MatchUpdate(LPC_PWM1, 3, 0, PWM_MATCH_UPDATE_NOW);
 		
 	// Config MR2/MR4 (arrêt)
-	PWM_MatchUpdate(LPC_PWM1, 2, 1.5*1000, PWM_MATCH_UPDATE_NOW); // Moteur gauche
-	PWM_MatchUpdate(LPC_PWM1, 4, 1.5*1000, PWM_MATCH_UPDATE_NOW); // Moteur droit 
+	PWM_MatchUpdate(LPC_PWM1, 2, VIT_NULLE, PWM_MATCH_UPDATE_NOW); // Moteur gauche
+	PWM_MatchUpdate(LPC_PWM1, 4, VIT_NULLE, PWM_MATCH_UPDATE_NOW); // Moteur droit 
 	
 	// PWM1.2 et PWM1.4 ENABLE
 	PWM_ChannelCmd(LPC_PWM1, 2, ENABLE);
 	PWM_ChannelCmd(LPC_PWM1, 4, ENABLE);
-	
-	LPC_PWM1->TCR |= 1<<3; // PWM Enable
 
 }
 
-void init_Encodeurs () 
+void init_Encodeurs (void) 
 {
 	PINSEL_CFG_Type PinCfg;
 	TIM_CAPTURECFG_Type TIM_CaptureConfigStruct;
@@ -80,10 +77,11 @@ void init_Encodeurs ()
 void avancer (int speed, int distance)
 {
 	float perim = 2*PI*R;
+	float NB_FRONTS = 0;	
 	
 	// Config MR2/MR4 pour Avancer/Reculer
-	PWM_MatchUpdate(LPC_PWM1, 2, (1.5+0.5*speed/100)*1000, PWM_MATCH_UPDATE_NOW); // Moteur gauche
-	PWM_MatchUpdate(LPC_PWM1, 4, (1.5-0.5*speed/100)*1000, PWM_MATCH_UPDATE_NOW); // Moteur droit	
+	PWM_MatchUpdate(LPC_PWM1, 2, VIT_NULLE-5*speed, PWM_MATCH_UPDATE_NOW); // Moteur gauche
+	PWM_MatchUpdate(LPC_PWM1, 4, VIT_NULLE+5*speed, PWM_MATCH_UPDATE_NOW); // Moteur droit	
 	
 	// Mise en route des encodeurs
 	TIM_Cmd(LPC_TIM0,ENABLE); // Capture CAP0[0] Enable
@@ -91,39 +89,33 @@ void avancer (int speed, int distance)
 	// Mise en route des moteurs
 	LPC_PWM1->TCR |= 1; // Counter Enable	
 	
-	// Attente du parcourt de la distance souhaitée ou de l'apparition d'un obstacle
-	while ((TIM_GetCaptureValue(LPC_TIM0,TIM_COUNTER_INCAP0)<88*distance/perim || TIM_GetCaptureValue(LPC_TIM1,TIM_COUNTER_INCAP0)<88*distance/perim) && detection() != 2)
-	{
-		if (detection() == 1) // On est à moins de 30cm d'un obstacle donc on ralentit
-		{
-			PWM_MatchUpdate(LPC_PWM1, 2, (1.5+0.5*speed/200)*1000, PWM_MATCH_UPDATE_NOW); // Moteur gauche à speed/2
-			PWM_MatchUpdate(LPC_PWM1, 4, (1.5-0.5*speed/200)*1000, PWM_MATCH_UPDATE_NOW); // Moteur droit à speed/2
-		}
-	}
-	// Arrêt du robot
-	stop();
-
+	NB_FRONTS = FRONTS_PAR_TOUR*distance/perim;
+	
+	/* On reste dans le boucle tant que le robot n'a pas fait la distance souhaitée */
+	while (LPC_TIM0->TC < NB_FRONTS || LPC_TIM1->TC < NB_FRONTS) {}
+	stop(); // Arrêt à la fin de la commande
+	
 }
 
 void rotation (int degre) // degre dans [-180;180]
 {
-	float nb_fronts;
+	float NB_FRONTS = 0;
 	
 	if (degre > 0) { // Tourner à gauche
 		
 		// Config MR2/MR4 pour Tourner
-		PWM_MatchUpdate(LPC_PWM1, 2, 1000, PWM_MATCH_UPDATE_NOW); // Moteur gauche (vitesse max en marche arrière)
-		PWM_MatchUpdate(LPC_PWM1, 4, 1000, PWM_MATCH_UPDATE_NOW); // Moteur droit (vitesse max en marche arrière)
+		PWM_MatchUpdate(LPC_PWM1, 2, VIT_MAX_ARRIERE, PWM_MATCH_UPDATE_NOW); // Moteur gauche (vitesse max en marche arrière)
+		PWM_MatchUpdate(LPC_PWM1, 4, VIT_MAX_ARRIERE, PWM_MATCH_UPDATE_NOW); // Moteur droit (vitesse max en marche arrière)
 		
-		nb_fronts = 88*2*R/D*degre/360;
+		NB_FRONTS = FRONTS_PAR_TOUR*(D*degre/360)/(2*R);
 		
 	} else { // Tourner à droite
 		
 		// Config MR2/MR4 pour Tourner
-		PWM_MatchUpdate(LPC_PWM1, 2, 2000, PWM_MATCH_UPDATE_NOW); // Moteur gauche (vitesse max en marche avant)
-		PWM_MatchUpdate(LPC_PWM1, 4, 2000, PWM_MATCH_UPDATE_NOW); // Moteur droit (vitesse max en marche avant)
+		PWM_MatchUpdate(LPC_PWM1, 2, VIT_MAX_AVANT, PWM_MATCH_UPDATE_NOW); // Moteur gauche (vitesse max en marche avant)
+		PWM_MatchUpdate(LPC_PWM1, 4, VIT_MAX_AVANT, PWM_MATCH_UPDATE_NOW); // Moteur droit (vitesse max en marche avant)
 		
-		nb_fronts = -88*2*R/D*degre/360;
+		NB_FRONTS = -FRONTS_PAR_TOUR*(D*degre/360)/(2*R);
 	}
 	
 	// Mise en route des encodeurs
@@ -132,14 +124,13 @@ void rotation (int degre) // degre dans [-180;180]
 	// Mise en route des moteurs
 	LPC_PWM1->TCR |= 1; // Counter Enable
 	
-	// Attente du parcourt de la distance souhaitée
-	while (TIM_GetCaptureValue(LPC_TIM0,TIM_COUNTER_INCAP0)<nb_fronts || TIM_GetCaptureValue(LPC_TIM1,TIM_COUNTER_INCAP0)<nb_fronts) 
-	{}
-	// Arrêt du robot
-	stop();
+	/* On reste dans le boucle tant que le robot n'a pas fait la distance souhaitée */
+	while (LPC_TIM0->TC < NB_FRONTS || LPC_TIM1->TC < NB_FRONTS) {}
+	stop(); // Arrêt à la fin de la commande
+	
 }
 
-void stop ()
+void stop (void)
 { 
 	/* Gestion des servoSmoteurs */
 	
@@ -150,8 +141,8 @@ void stop ()
 	LPC_PWM1->TCR &= ~(1<<1); // Clear Reset
 	
 	// Par sécurité on met les config d'arrêt pour les deux moteurs
-	PWM_MatchUpdate(LPC_PWM1, 2, 1.5*1000, PWM_MATCH_UPDATE_NOW); // Moteur gauche à l'arrêt
-	PWM_MatchUpdate(LPC_PWM1, 4, 1.5*1000, PWM_MATCH_UPDATE_NOW); // Moteur droit à l'arrêt
+	PWM_MatchUpdate(LPC_PWM1, 2, VIT_NULLE, PWM_MATCH_UPDATE_NOW); // Moteur gauche à l'arrêt
+	PWM_MatchUpdate(LPC_PWM1, 4, VIT_NULLE, PWM_MATCH_UPDATE_NOW); // Moteur droit à l'arrêt
 	
 	/* Gestion des encodeurs */
 	
@@ -161,6 +152,8 @@ void stop ()
 	// RAZ des registres de capture CR0
 	TIM_ResetCounter(LPC_TIM0);
 	TIM_ResetCounter(LPC_TIM1);
+	
+	// On attend pour que les registres se remettent bien à zéro
+	delay_ms(20);
 
 }
-
