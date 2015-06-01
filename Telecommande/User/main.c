@@ -12,18 +12,26 @@
 #include "lpc17xx_libcfg_default.h"
 #include "./include/emissionIR.h"
 
-bool flagEmit;
-int i;
+uint8_t i;
 uint8_t tabMessage[16];
-
+extern bool flagEmit;
+extern int taille;
 
 //===========================================================//
 // Function: Main
 //===========================================================//
 int main(void)
 {
-		init();
-		signal(true,1);
+	init();
+	/*while(1) {
+	TIM_Cmd(LPC_TIM0, ENABLE);
+	}*/
+	for (i = 0 ; i < 16 ; i ++ ) {
+			tabMessage[i] = i;
+		}
+	emitMessage(tabMessage, taille);
+		while(!flagEmit);
+	deInit();
 }
 
 

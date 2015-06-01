@@ -15,3 +15,4 @@
 .\output\emissionir.o: ..\User\lpc17xx_libcfg.h
 .\output\emissionir.o: ..\Libraries\LCP1768_StdPeriph_Driver\include\lpc17xx_pinsel.h
 .\output\emissionir.o: ..\Libraries\LCP1768_StdPeriph_Driver\include\lpc17xx_libcfg_default.h
+.\output\emissionir.o: ..\Libraries\LCP1768_StdPeriph_Driver\include\lpc17xx_gpio.h
