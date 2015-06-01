@@ -5,6 +5,6 @@
 
 //Initialise les registres pour utiliser le terminal.
 void initTerminal(void);
+//Renvoie la taille d'un tableau.
+int taille(uint8_t [16]);
 
-//Rempli un tableau avec les données transmises par le terminal. Appelée par la routine d'interruption.
-void tabDonnees(uint8_t tableau[16], bool * finTab);
