@@ -13,7 +13,7 @@
 #include "./include/emissionIR.h"
 
 uint8_t i;
-uint8_t tabMessage[16];
+uint8_t tabMessage[16] = {98, 10, 156, 10};
 extern bool flagEmit;
 extern int taille;
 
@@ -22,16 +22,8 @@ extern int taille;
 //===========================================================//
 int main(void)
 {
-	init();
-	/*while(1) {
-	TIM_Cmd(LPC_TIM0, ENABLE);
-	}*/
-	for (i = 0 ; i < 16 ; i ++ ) {
-			tabMessage[i] = i;
-		}
 	emitMessage(tabMessage, taille);
-		while(!flagEmit);
-	deInit();
+	while(!flagEmit);
 }
 
 

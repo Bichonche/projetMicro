@@ -15,7 +15,8 @@ void deInit(void);
 void header(void);
 void bit_0(void);
 void bit_1(void);
-void eom(void);
-
+void footer(void);
+void signal_0(uint32_t);
+void signal_1(uint32_t);
 void signal(bool, uint32_t);
 
