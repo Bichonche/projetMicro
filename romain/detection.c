@@ -1,4 +1,5 @@
 #include "lpc17xx_pinsel.h"
+#include "lpc17xx_exti.h"
 #include "detection.h"
 #include "lpc17xx_clkpwr.h"
 #include "lpc17xx_adc.h"
@@ -25,6 +26,7 @@ v = ADC_ChannelGetData(LPC_ADC,0);
 // On renvoie la valeur du voltage en fonction de la luminosité
 return v;
 }
+
 float distance (void)
 {
 float d = 0;
@@ -32,11 +34,19 @@ uint16_t v = chargement(); // chargement des données du laser
 d = 0.26 / v; // inversion de la fonction
 return d;
 }
+
 void init (void)
 {
-	 CLKPWR_ConfigPPWR(CLKPWR_PCONP_PCAD ,ENABLE)
+	 ADC_Init(LPC_ADC,50);
+	 ADC_IntConfig(LPC_ADC,ADC_ADINTEN0,SET);
+	 EXTI_Init();
+	 EXTI_SetPolarity(EXTI_EINT0, EXTI_POLARITY_LOW_ACTIVE_OR_FALLING_EDGE);
+	 EXTI_SetPolarity(EXTI_EINT1, EXTI_POLARITY_LOW_ACTIVE_OR_FALLING_EDGE);
+	 EXTI_Config(EXTI_EINT0);
+	 EXTI_Config(EXTI_EINT1);
+	 CLKPWR_ConfigPPWR(CLKPWR_PCONP_PCAD ,ENABLE);
 d1 = (FIO1PIN >>11) & 0x01; // copie de p1.11 sur d1 (si 1 le bouton est poussé);
-d2 = (FIO1PIN >>21) & 0x01;
+d2 = (FIO1PIN >>12) & 0x01;
 }
 
 void EINT0_IRQHandler (void)
@@ -44,7 +54,7 @@ void EINT0_IRQHandler (void)
 if (d1)
 {
 collision_gauche = true;
-}
+}  
 }
 
 void EINT1_IRQHandler (void)
