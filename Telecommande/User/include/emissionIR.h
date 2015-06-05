@@ -18,5 +18,5 @@ void bit_1(void);
 void footer(void);
 void signal_0(uint32_t);
 void signal_1(uint32_t);
-void signal(bool, uint32_t);
+void signal(uint32_t , uint32_t);
 

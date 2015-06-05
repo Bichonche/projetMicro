@@ -23,7 +23,6 @@ void init() {
 	//TIMER0 - Porteuse
 	TIM_ConfigStructInit(TIM_TIMER_MODE, &TIMERCFG_0);
 	TIMERCFG_0.PrescaleOption = TIM_PRESCALE_TICKVAL;
-	//TIMERCFG_0.PrescaleValue 	= 99; //Obtention d'un signal @ 1MHz
 	
 	TIM_Init(LPC_TIM0, TIM_TIMER_MODE, &TIMERCFG_0);
 	
@@ -41,7 +40,7 @@ void init() {
 	MATCHCFG_0.ResetOnMatch				= ENABLE;
 	
 	TIM_ConfigMatch(LPC_TIM0, &MATCHCFG_0);
-	TIM_UpdateMatchValue(LPC_TIM0, 0, 349); // @ ~36kHz
+	TIM_UpdateMatchValue(LPC_TIM0, 0, 347); // @ ~36kHz
 		
 	
 	//MR1
@@ -73,17 +72,16 @@ void emitMessage(uint8_t t[16],uint8_t taille) {
 	char i, j;
 	init();
 	flagEmit = false;
-	header();
+	signal(90,45);
 	for (i = 0 ; i < taille ; i ++ ) {
 		//Puis bit a bit
 		for (j = 0 ; j < 8 ; j ++ ) {
 			//Dans tous les cas la premiere valeur du doublet est 600us
-			signal_1(6);
-			delay = (t[i] & (1 >> j)) ? 10 : 20;
-			signal_0(delay);
-			}
+			delay = ((t[i] >> j) & 1) ? 10 : 20;
+			signal(6, delay);	
+		}
 	}
-	footer();
+	signal(6,400);
 	deInit();
 	flagEmit= true;
 }
@@ -92,7 +90,7 @@ void TIMER1_IRQHandler(void) {
 	//Timer1 interrupt handler                     
 	TIM_DeInit(LPC_TIM1);
 	TIM_Init(LPC_TIM1, TIM_TIMER_MODE, &TIMERCFG_1);
-	TIM_DeInit (LPC_TIM0);
+	TIM_DeInit(LPC_TIM0);
 	TIM_ResetCounter(LPC_TIM0);
 	flagBitEmit = true;
 }
@@ -104,6 +102,27 @@ void deInit()
 }
 
 //Creation d'un signal
+void signal(uint32_t delay_1, uint32_t delay_2) {
+	{
+		PINCFG_0.Funcnum= 3;
+		PINSEL_ConfigPin(&PINCFG_0);
+		TIM_Init(LPC_TIM0, TIM_TIMER_MODE, &TIMERCFG_0);
+		TIM_Cmd(LPC_TIM0, ENABLE);
+		TIM_UpdateMatchValue(LPC_TIM1, 0, delay_1);
+		TIM_Cmd(LPC_TIM1, ENABLE);
+	}while(!flagBitEmit);
+	flagBitEmit = false;
+	{
+		PINCFG_0.Funcnum = 0;
+		PINSEL_ConfigPin(&PINCFG_0);
+		GPIO_SetDir(1, (1<<28), 1);
+		GPIO_ClearValue(1, (0<<28));
+		TIM_UpdateMatchValue(LPC_TIM1, 0, delay_2);
+		TIM_Cmd(LPC_TIM1, ENABLE);
+	}while(!flagBitEmit);
+	flagBitEmit = false;
+	
+}	
 
 void signal_0(uint32_t delay) {
 	{
@@ -128,12 +147,3 @@ void signal_1(uint32_t delay) {
 	}while(!flagBitEmit);
 	flagBitEmit = false;
 }
- void header() {
-	signal_1(90);
-	signal_0(45);
- }
- 
- void footer() {
-	signal_1(6);
-	signal_0(400);
- }
